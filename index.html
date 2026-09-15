@@ -160,34 +160,31 @@
             margin-bottom: 20px;
         }
 
-        .product-card {
+        .-bottomproduct-card {
             background-color: #1a1a1a;
             border: 1px solid #39FF14;
             border-radius: 8px;
-            padding: 10px;
+           : padding: 10px;
             text-align: center;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
-        }
+         }
 
         .product-card:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 10px #39FF14;
+            box-shadow: 0 015 10px #39FF14;
         }
 
         .product-img {
-            width: 80px;
-            height: 80px;
+            width: 100%;
+            height: px100px;
             background-color: #333;
             margin: 0 auto 10px;
             border-radius: 5px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #888;
-            font-size: 0.7rem;
-            background-size: cover;
+            background-size:;
+ cover;
             background-position: center;
+            background-repeat: no-repeat;
         }
 
         .product-name {
@@ -203,8 +200,7 @@
 
         /* --- FORM NHẬP TÊN --- */
         .input-group {
-            margin-bottom: 15px;
-            display: flex;
+            margin            display: flex;
             gap: 10px;
         }
 
@@ -310,6 +306,7 @@
         .mb-2 { margin-bottom: 20px; }
         p { line-height: 1.6; margin-bottom: 10px; }
         .highlight { color: #39FF14; font-weight: bold; }
+        .account-img { width:100%; max-width:300px; border-radius:5px; border:1px solid #39FF14; margin-bottom:10px; }
     </style>
 </head>
 <body>
@@ -322,7 +319,7 @@
         <header>
             <div id="menu-btn">☰</div>
             <div id="main-title" class="text-outline">SHOP BÁN TRÁI BLOX FRUIT VÀ NHỮNG PHỤ KIỆN KHÁC🔑</div>
-            <div style="width: 40px;"></div> <!-- Cân bằng layout -->
+            <div style="width: 40px;"></div>
         </header>
 
         <!-- SIDEBAR MENU -->
@@ -358,13 +355,14 @@
             <div id="main-acc" class="section">
                 <h2>Chủ ACC CHÍNH</h2>
                 <div class="text-center mb-2">
-                    <!-- Thay src="..." bằng link ảnh thật của bạn -->
-                    <img src="https://via.placeholder.com/150" alt="Ảnh 1" style="width:100%; max-width:300px; border-radius:5px; border:1px solid #39FF14; margin-bottom:10px;">
+                    <!-- ĐÃ THAY ẢNH 1 -->
+                    <img src="https://raw.githubusercontent.com/proxyvipivn/Shop-blox-fruit-/main/IMG_8111.jpeg" alt="Ảnh 1" class="account-img">
                     <p class="highlight">Tên: trantrungsang282010 (Sao chép)</p>
                     <p>Khách hàng vui lòng đọc ạ. LƯU Ý: Kết bạn đúng tài khoản trong ảnh này và muốn chắc thì nhấn sao chép. Vui lòng gửi đúng chủ tài khoản để không bị vấn đề khác xảy ra.</p>
                 </div>
                 <div class="text-center mb-2">
-                    <img src="https://via.placeholder.com/150" alt="Ảnh 2" style="width:100%; max-width:300px; border-radius:5px; border:1px solid #39FF14; margin-bottom:10px;">
+                    <!-- ĐÃ THAY ẢNH 2 -->
+                    <img src="https://raw.githubusercontent.com/proxyvipivn/Shop-blox-fruit-/main/IMG_8114.jpeg" alt="Ảnh 2" class="account-img">
                     <p class="highlight">TikTok: @trungsangcaythue</p>
                     <p class="highlight">Roblox: @trantrungsang282010</p>
                     <p>Từ 20k mới nhận thẻ cào. Dưới 20k là phải bank.</p>
@@ -409,14 +407,10 @@
                 <p id="name-status-acc" class="text-center highlight mb-2"></p>
 
                 <h3 class="text-outline" style="color:#39FF14; margin-bottom:10px;">Cày điểm F</h3>
-                <div class="product-grid" id="f-points-grid">
-                    <!-- Sẽ render bằng JS -->
-                </div>
+                <div class="product-grid" id="f-points-grid"></div>
 
                 <h3 class="text-outline" style="color:#39FF14; margin: 20px 0 10px;">Thức tỉnh</h3>
-                <div class="product-grid" id="awaken-grid">
-                    <!-- Sẽ render bằng JS -->
-                </div>
+                <div class="product-grid" id="awaken-grid"></div>
             </div>
 
             <!-- ĐƠN MUA HÀNG -->
@@ -508,19 +502,14 @@
             reviews: JSON.parse(localStorage.getItem('blox_reviews')) || []
         };
 
-        // Lưu ID nếu chưa có
         if (!localStorage.getItem('blox_user_id')) {
             localStorage.setItem('blox_user_id', currentUser.id);
         }
 
-        // Tạo ID ngẫu nhiên từ 1-9 số, đảo lộn
         function generateRandomId() {
-            let length = Math.floor(Math.random() * 9) + 1; // 1 đến 9 số
+            let length = Math.floor(Math.random() * 9) + 1;
             let arr = [];
-            for(let i = 0; i < length; i++) {
-                arr.push(Math.floor(Math.random() * 9) + 1);
-            }
-            // Đảo lộn mảng
+            for(let i = 0; i < length; i++) { arr.push(Math.floor(Math.random() * 9) + 1); }
             for (let i = arr.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [arr[i], arr[j]] = [arr[j], arr[i]];
@@ -528,13 +517,10 @@
             return arr.join('');
         }
 
-        // Tạo mã đơn hàng ngẫu nhiên
         function generateOrderCode() {
-            let length = Math.floor(Math.random() * 6) + 4; // 4-9 số
+            let length = Math.floor(Math.random() * 6) + 4;
             let arr = [];
-            for(let i = 0; i < length; i++) {
-                arr.push(Math.floor(Math.random() * 9) + 1);
-            }
+            for(let i = 0; i < length; i++) { arr.push(Math.floor(Math.random() * 9) + 1); }
             for (let i = arr.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [arr[i], arr[j]] = [arr[j], arr[i]];
@@ -546,7 +532,6 @@
         let progress = 0;
         const loader = document.getElementById('loader');
         const appContainer = document.getElementById('app-container');
-        const mainTitle = document.getElementById('main-title');
 
         const loadInterval = setInterval(() => {
             progress += Math.floor(Math.random() * 10) + 5;
@@ -558,7 +543,6 @@
                     setTimeout(() => {
                         loader.style.display = 'none';
                         appContainer.style.display = 'block';
-                        // Đưa tiêu đề lên vị trí cao nhất (đã được set cứng trong header nên không che sản phẩm)
                         checkUserSetup();
                     }, 500);
                 }, 500);
@@ -569,7 +553,6 @@
         // --- 3. XỬ LÝ TÀI KHOẢN NGƯỜI DÙNG ---
         function checkUserSetup() {
             if (!currentUser.name) {
-                // Hiện thông báo yêu cầu nhập tên
                 document.getElementById('modal-title').innerText = "Chào mừng bạn đến với Shop!";
                 document.getElementById('modal-message').innerText = "Hệ thống đã tạo tài khoản cho bạn. Vui lòng nhập tên của bạn để tiếp tục.";
                 document.getElementById('modal-input-container').classList.remove('hidden');
@@ -600,7 +583,6 @@
             document.getElementById('profile-id').innerText = currentUser.id;
             document.getElementById('profile-orders').innerText = currentUser.orders.length;
             
-            // Tự động điền tên vào các ô input mua hàng
             document.getElementById('customer-name-fruit').value = currentUser.name;
             document.getElementById('customer-name-acc').value = currentUser.name;
             document.getElementById('name-status-fruit').innerText = "Đã lưu tên: " + currentUser.name;
@@ -616,62 +598,60 @@
         closeBtn.addEventListener('click', () => sidebar.classList.remove('active'));
 
         function showSection(sectionId) {
-            // Ẩn tất cả các section
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-            // Hiện section được chọn
             document.getElementById(sectionId).classList.add('active');
-            // Đóng menu
             sidebar.classList.remove('active');
             
-            // Cập nhật lại UI nếu là profile
             if(sectionId === 'profile') updateProfileUI();
             if(sectionId === 'orders') renderOrders();
             if(sectionId === 'history') renderHistory();
         }
 
-        // --- 5. DỮ LIỆU SẢN PHẨM ---
+        // --- 5. DỮ LIỆU SẢN PHẨM (ĐÃ CẬP NHẬT ẢNH) ---
+        const baseUrl = "https://raw.githubusercontent.com/proxyvipivn/Shop-blox-fruit-/main/";
+
         const legendaryFruits = [
-            { name: 'Quake', price: '7k' },
-            { name: 'Buddha', price: '12k' },
-            { name: 'Love', price: '8k' },
-            { name: 'Spider', price: '10k' },
-            { name: 'Sound', price: '10k' },
-            { name: 'Phoenix', price: '10k' },
-            { name: 'Portal', price: '15k' },
-            { name: 'Rumble', price: '20k' },
-            { name: 'Pain', price: '15k' },
-            { name: 'Blizzard', price: '10k' }
+            { name: 'Quake', price: '7k', img: baseUrl + 'IMG_8115.jpeg' },
+            { name: 'Buddha', price: '12k', img: baseUrl + 'IMG_8116.jpeg' },
+            { name: 'Love', price: '8k', img: baseUrl + 'IMG_8117.jpeg' },
+            { name: 'Spider', price: '10k', img: baseUrl + 'IMG_8118.jpeg' },
+            { name: 'Sound', price: '10k', img: baseUrl + 'IMG_8119.jpeg' },
+            { name: 'Phoenix', price: '10k', img: baseUrl + 'IMG_8120.jpeg' },
+            { name: 'Portal', price: '15k', img: baseUrl + 'IMG_8121.jpeg' },
+            { name: 'Rumble', price: '20k', img: baseUrl + 'IMG_8122.jpeg' },
+            { name: 'Pain', price: '15k', img: baseUrl + 'IMG_8123.jpeg' },
+            { name: 'Blizzard', price: '10k', img: baseUrl + 'IMG_8124.jpeg' }
         ];
 
         const mythicalFruits = [
-            { name: 'Gravity', price: '20k' },
-            { name: 'Mammoth', price: '20k' },
-            { name: 'T-rex', price: '20k' },
-            { name: 'Dough', price: '20k' },
-            { name: 'Shadow', price: '15k' },
-            { name: 'Venom', price: '15k' },
-            { name: 'Gas', price: '25k' },
-            { name: 'Spirit', price: '20k' },
-            { name: 'Tiger', price: '40k' },
-            { name: 'Yeti', price: '45k' },
-            { name: 'Magnet', price: '120k' },
-            { name: 'Kitsune', price: '70k' },
-            { name: 'Control', price: '60k' },
-            { name: 'Dragon (Phương đông)', price: '170k' },
-            { name: 'Dragon (Phương tây)', price: '180k' }
+            { name: 'Gravity', price: '20k', img: baseUrl + 'IMG_8125.jpeg' },
+            { name: 'Mammoth', price: '20k', img: baseUrl + 'IMG_8126.jpeg' },
+            { name: 'T-rex', price: '20k', img: baseUrl + 'IMG_8127.jpeg' },
+            { name: 'Dough', price: '20k', img: baseUrl + 'IMG_8128.jpeg' },
+            { name: 'Shadow', price: '15k', img: '' }, // Chờ ảnh
+            { name: 'Venom', price: '15k', img: '' },
+            { name: 'Gas', price: '25k', img: '' },
+            { name: 'Spirit', price: '20k', img: '' },
+            { name: 'Tiger', price: '40k', img: '' },
+            { name: 'Yeti', price: '45k', img: '' },
+            { name: 'Magnet', price: '120k', img: '' },
+            { name: 'Kitsune', price: '70k', img: '' },
+            { name: 'Control', price: '60k', img: '' },
+            { name: 'Dragon (Phương đông)', price: '170k', img: '' },
+            { name: 'Dragon (Phương tây)', price: '180k', img: '' }
         ];
 
         const fPointItems = [
-            { name: '5k F', price: '7.5k' },
-            { name: '10k F', price: '15k' },
-            { name: '20k F', price: '30k' }
+            { name: '5k F', price: '7.5k', img: '' },
+            { name: '10k F', price: '15k', img: '' },
+            { name: '20k F', price: '30k', img: '' }
         ];
 
         const awakenItems = [
-            { name: 'Thức tỉnh tất cả các trái (Phun chiêu)', price: '20k' },
-            { name: 'Thức tỉnh tất cả các trái (3 chiêu)', price: '12k' },
-            { name: 'Thức tỉnh Dough V2 (Phun chiêu)', price: '50k' },
-            { name: 'Thức tỉnh Dough V2 (3 chiêu)', price: '30k' }
+            { name: 'Thức tỉnh tất cả các trái (Phun chiêu)', price: '20k', img: '' },
+            { name: 'Thức tỉnh tất cả các trái (3 chiêu)', price: '12k', img: '' },
+            { name: 'Thức tỉnh Dough V2 (Phun chiêu)', price: '50k', img: '' },
+            { name: 'Thức tỉnh Dough V2 (3 chiêu)', price: '30k', img: '' }
         ];
 
         function renderProducts() {
@@ -687,9 +667,13 @@
             data.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
-                // Placeholder ảnh, người dùng có thể thay thế bằng thẻ <img> nếu có link ảnh
+                
+                // Nếu có ảnh thì hiển thị ảnh, không có thì hiện chữ "Ảnh"
+                let imgStyle = item.img ? `background-image: url('${item.img}');` : '';
+                let imgContent = item.img ? '' : 'Ảnh';
+
                 card.innerHTML = `
-                    <div class="product-img">Ảnh</div>
+                    <div class="product-img" style="${imgStyle}">${imgContent}</div>
                     <div class="product-name">${item.name}</div>
                     <div class="product-price">${item.price}</div>
                 `;
@@ -730,17 +714,14 @@
             
             document.getElementById('modal-title').innerText = "Xác nhận mua hàng";
             document.getElementById('modal-message').innerText = `Bạn muốn mua: ${product.name} - ${product.price}`;
-            document.getElementById('modal-input-container').classList.add('hidden'); // Ẩn ô nhập tên vì đã lưu
+            document.getElementById('modal-input-container').classList.add('hidden');
             
             const confirmBtn = document.getElementById('modal-confirm-btn');
             confirmBtn.innerText = "✅ Mua";
             confirmBtn.onclick = () => {
-                // Bước xác nhận lại tên
                 document.getElementById('modal-message').innerText = "Vui lòng xác nhận lại tên của quý khách: " + currentUser.name;
                 confirmBtn.innerText = "Xác nhận đặt hàng";
-                confirmBtn.onclick = () => {
-                    processOrder();
-                };
+                confirmBtn.onclick = () => { processOrder(); };
             };
             document.getElementById('modal').style.display = 'flex';
         }
@@ -755,7 +736,6 @@
             const now = new Date();
             const dateStr = now.toLocaleDateString('vi-VN');
             const timeStr = now.toLocaleTimeString('vi-VN');
-
             const orderCode = generateOrderCode();
             
             const newOrder = {
@@ -764,11 +744,11 @@
                 price: selectedProduct.price,
                 date: dateStr,
                 time: timeStr,
-                status: 'Đang xử lý', // Trạng thái ban đầu
+                status: 'Đang xử lý',
                 buyer: currentUser.name
             };
 
-            currentUser.orders.unshift(newOrder); // Thêm vào đầu danh sách
+            currentUser.orders.unshift(newOrder);
             localStorage.setItem('blox_orders', JSON.stringify(currentUser.orders));
             
             alert(`Đặt hàng thành công!\nMã đơn hàng của bạn là: ${orderCode}`);
@@ -792,7 +772,7 @@
             }
 
             const now = new Date();
-            const isAfter8PM = now.getHours() >= 20; // 8 giờ tối
+            const isAfter8PM = now.getHours() >= 20;
 
             currentUser.orders.forEach((order, index) => {
                 const orderDiv = document.createElement('div');
@@ -837,7 +817,6 @@
                 return;
             }
 
-            // Lịch sử hiển thị tất cả đơn hàng dưới dạng tóm tắt
             currentUser.orders.forEach(order => {
                 const div = document.createElement('div');
                 div.className = 'order-item';
@@ -868,14 +847,8 @@
 
         function submitReview() {
             const text = document.getElementById('review-text').value.trim();
-            if (selectedRating === 0) {
-                alert("Vui lòng chọn số sao đánh giá!");
-                return;
-            }
-            if (!text) {
-                alert("Vui lòng nhập mô tả trải nghiệm!");
-                return;
-            }
+            if (selectedRating === 0) { alert("Vui lòng chọn số sao đánh giá!"); return; }
+            if (!text) { alert("Vui lòng nhập mô tả trải nghiệm!"); return; }
 
             const review = {
                 rating: selectedRating,
@@ -888,11 +861,9 @@
 
             document.getElementById('review-result').innerHTML = `Cảm ơn bạn đã đánh giá ${selectedRating} sao!<br><span style="font-size:0.9rem; color:#fff;">(Vui lòng chụp ảnh lại phần khách hàng mới mô tả về shop mà gửi qua tik tok hoặc zalo cho bên shop ạ. Xin cảm ơn quý khách 🎉)</span>`;
             
-            // Reset form
             document.getElementById('review-text').value = '';
             selectedRating = 0;
             stars.forEach(s => s.classList.remove('active'));
-
             renderReviews();
         }
 
@@ -907,7 +878,6 @@
             });
         }
 
-        // Khởi tạo render đánh giá ban đầu
         renderReviews();
 
     </script>
