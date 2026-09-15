@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHOP BÁN TRÁI BLOX FRUIT VÀ NHỮNG PHỤ KIỆN KHÁC🔑</title>
+    <style>
+        /* --- CÀI ĐẶT CHUNG --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Hiệu ứng viền xanh phát sáng */
+        .glowing-border {
+            border: 3px solid #39FF14;
+            box-shadow: 0 0 15px #39FF14, inset 0 0 10px #39FF14;
+        }
+
+        /* Chữ trắng viền đen dễ đọc */
+        .text-outline {
+            color: #fff;
+            text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+        }
+
+        /* --- LOADING SCREEN --- */
+        #loader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 4rem;
+            font-weight: bold;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        /* --- KHUNG CHÍNH --- */
+        #app-container {
+            width: 100%;
+            max-width: 600px;
+            background-color: #000;
+            position: relative;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 10px;
+            min-height: 95vh;
+            display: none; /* Sẽ hiện sau khi load */
+        }
+
+        /* --- HEADER --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #39FF14;
+            margin-bottom: 20px;
+        }
+
+        #main-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-align: center;
+            flex: 1;
+        }
+
+        #menu-btn {
+            font-size: 2rem;
+            cursor: pointer;
+            color: #39FF14;
+            padding: 0 10px;
+        }
+
+        /* --- SIDEBAR MENU --- */
+        #sidebar {
+            position: fixed;
+            top: 0; left: -300px;
+            width: 250px;
+            height: 100%;
+            background-color: #111;
+            border-right: 2px solid #39FF14;
+            box-shadow: 2px 0 15px rgba(57, 255, 20, 0.5);
+            transition: left 0.3s ease;
+            z-index: 1000;
+            padding-top: 60px;
+        }
+
+        #sidebar.active {
+            left: 0;
+        }
+
+        #sidebar ul {
+            list-style: none;
+        }
+
+        #sidebar li {
+            padding: 15px 20px;
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        #sidebar li:hover {
+            background-color: #39FF14;
+            color: #000;
+        }
+
+        #close-btn {
+            position: absolute;
+            top: 15px; right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #39FF14;
+        }
+
+        /* --- NỘI DUNG CÁC SECTION --- */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: #39FF14;
+            margin-bottom: 15px;
+            text-align: center;
+            border-bottom: 1px dashed #39FF14;
+            padding-bottom: 5px;
+        }
+
+        /* --- SẢN PHẨM --- */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .product-card {
+            background-color: #1a1a1a;
+            border: 1px solid #39FF14;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .product-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px #39FF14;
+        }
+
+        .product-img {
+            width: 80px;
+            height: 80px;
+            background-color: #333;
+            margin: 0 auto 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #888;
+            font-size: 0.7rem;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .product-name {
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .product-price {
+            color: #39FF14;
+            font-weight: bold;
+        }
+
+        /* --- FORM NHẬP TÊN --- */
+        .input-group {
+            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #39FF14;
+            background: #000;
+            color: #fff;
+            border-radius: 5px;
+        }
+
+        .input-group button {
+            padding: 10px 15px;
+            background: #39FF14;
+            border: none;
+            color: #000;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* --- MODAL --- */
+        #modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: #111;
+            border: 2px solid #39FF14;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .btn-cancel { background: #ff4d4d; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;}
+        .btn-confirm { background: #39FF14; color: black; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;}
+
+        /* --- ĐƠN HÀNG --- */
+        .order-item {
+            background: #1a1a1a;
+            border: 1px solid #444;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .order-status {
+            color: #f1c40f;
+            font-weight: bold;
+        }
+        
+        .order-status.completed {
+            color: #39FF14;
+        }
+
+        /* --- ĐÁNH GIÁ --- */
+        .stars {
+            font-size: 2rem;
+            color: #555;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .stars span.active {
+            color: #f1c40f;
+        }
+
+        textarea {
+            width: 100%;
+            height: 80px;
+            background: #000;
+            border: 1px solid #39FF14;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            resize: none;
+        }
+
+        /* Utility */
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
+        .mt-2 { margin-top: 20px; }
+        .mb-2 { margin-bottom: 20px; }
+        p { line-height: 1.6; margin-bottom: 10px; }
+        .highlight { color: #39FF14; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <!-- LOADING SCREEN -->
+    <div id="loader" class="text-outline">0%</div>
+
+    <!-- KHUNG CHÍNH -->
+    <div id="app-container" class="glowing-border">
+        <header>
+            <div id="menu-btn">☰</div>
+            <div id="main-title" class="text-outline">SHOP BÁN TRÁI BLOX FRUIT VÀ NHỮNG PHỤ KIỆN KHÁC🔑</div>
+            <div style="width: 40px;"></div> <!-- Cân bằng layout -->
+        </header>
+
+        <!-- SIDEBAR MENU -->
+        <nav id="sidebar">
+            <div id="close-btn">✖</div>
+            <ul>
+                <li onclick="showSection('profile')">Hồ sơ</li>
+                <li onclick="showSection('main-acc')">Chủ ACC CHÍNH</li>
+                <li onclick="showSection('fruits')">Giá trái Fruit</li>
+                <li onclick="showSection('accessories')">Phụ kiện</li>
+                <li onclick="showSection('orders')">Đơn mua hàng</li>
+                <li onclick="showSection('history')">Lịch sử</li>
+                <li onclick="showSection('support')">Hỗ trợ 👤</li>
+                <li onclick="showSection('policy')">Chính sách/bảo mật🔒</li>
+                <li onclick="showSection('review')">Đánh giá ⭐️</li>
+            </ul>
+        </nav>
+
+        <!-- NỘI DUNG -->
+        <main id="main-content">
+            
+            <!-- HỒ SƠ -->
+            <div id="profile" class="section">
+                <h2>Hồ sơ cá nhân</h2>
+                <div class="text-center mt-2">
+                    <p>Tên người dùng: <span id="profile-name" class="highlight"></span></p>
+                    <p>ID hệ thống: <span id="profile-id" class="highlight"></span></p>
+                    <p>Số đơn hàng đã mua: <span id="profile-orders" class="highlight">0</span></p>
+                </div>
+            </div>
+
+            <!-- CHỦ ACC CHÍNH -->
+            <div id="main-acc" class="section">
+                <h2>Chủ ACC CHÍNH</h2>
+                <div class="text-center mb-2">
+                    <!-- Thay src="..." bằng link ảnh thật của bạn -->
+                    <img src="https://via.placeholder.com/150" alt="Ảnh 1" style="width:100%; max-width:300px; border-radius:5px; border:1px solid #39FF14; margin-bottom:10px;">
+                    <p class="highlight">Tên: trantrungsang282010 (Sao chép)</p>
+                    <p>Khách hàng vui lòng đọc ạ. LƯU Ý: Kết bạn đúng tài khoản trong ảnh này và muốn chắc thì nhấn sao chép. Vui lòng gửi đúng chủ tài khoản để không bị vấn đề khác xảy ra.</p>
+                </div>
+                <div class="text-center mb-2">
+                    <img src="https://via.placeholder.com/150" alt="Ảnh 2" style="width:100%; max-width:300px; border-radius:5px; border:1px solid #39FF14; margin-bottom:10px;">
+                    <p class="highlight">TikTok: @trungsangcaythue</p>
+                    <p class="highlight">Roblox: @trantrungsang282010</p>
+                    <p>Từ 20k mới nhận thẻ cào. Dưới 20k là phải bank.</p>
+                </div>
+                <div style="background:#1a1a1a; padding:15px; border-radius:5px; border:1px solid #39FF14;">
+                    <p class="highlight">Tài khoản Ngân hàng:</p>
+                    <p>Ngân hàng: MBBANK</p>
+                    <p>STK: 0372822927</p>
+                    <p>Tên: TRAN TRUNG SANG</p>
+                    <p>Nội dung chuyển khoản: (Đơn mua và tên roblox)</p>
+                    <p class="text-outline" style="color:#ff4d4d;">Vui lòng nhập đúng nội dung chuyển khoản!</p>
+                </div>
+            </div>
+
+            <!-- GIÁ TRÁI FRUIT -->
+            <div id="fruits" class="section">
+                <h2>Giá trái Fruit</h2>
+                
+                <div class="input-group mb-2">
+                    <input type="text" id="customer-name-fruit" placeholder="Nhập tên khách hàng...">
+                    <button onclick="saveCustomerName('fruit')">Xác nhận</button>
+                    <button onclick="clearCustomerName('fruit')" style="background:#ff4d4d; color:white;">Huỷ</button>
+                </div>
+                <p id="name-status-fruit" class="text-center highlight mb-2"></p>
+
+                <h3 class="text-outline" style="color:#39FF14; margin-bottom:10px;">Huyền Thoại</h3>
+                <div class="product-grid" id="legendary-grid"></div>
+
+                <h3 class="text-outline" style="color:#39FF14; margin: 20px 0 10px;">Truyền Thuyết</h3>
+                <div class="product-grid" id="mythical-grid"></div>
+            </div>
+
+            <!-- PHỤ KIỆN -->
+            <div id="accessories" class="section">
+                <h2>Phụ kiện</h2>
+                
+                <div class="input-group mb-2">
+                    <input type="text" id="customer-name-acc" placeholder="Nhập tên khách hàng...">
+                    <button onclick="saveCustomerName('acc')">Xác nhận</button>
+                    <button onclick="clearCustomerName('acc')" style="background:#ff4d4d; color:white;">Huỷ</button>
+                </div>
+                <p id="name-status-acc" class="text-center highlight mb-2"></p>
+
+                <h3 class="text-outline" style="color:#39FF14; margin-bottom:10px;">Cày điểm F</h3>
+                <div class="product-grid" id="f-points-grid">
+                    <!-- Sẽ render bằng JS -->
+                </div>
+
+                <h3 class="text-outline" style="color:#39FF14; margin: 20px 0 10px;">Thức tỉnh</h3>
+                <div class="product-grid" id="awaken-grid">
+                    <!-- Sẽ render bằng JS -->
+                </div>
+            </div>
+
+            <!-- ĐƠN MUA HÀNG -->
+            <div id="orders" class="section">
+                <h2>Đơn mua hàng</h2>
+                <div id="orders-list">
+                    <p class="text-center">Chưa có đơn hàng nào.</p>
+                </div>
+            </div>
+
+            <!-- LỊCH SỬ -->
+            <div id="history" class="section">
+                <h2>Lịch sử mua hàng</h2>
+                <div id="history-list">
+                    <p class="text-center">Chưa có lịch sử giao dịch.</p>
+                </div>
+            </div>
+
+            <!-- HỖ TRỢ -->
+            <div id="support" class="section">
+                <h2>Hỗ trợ 👤</h2>
+                <div class="text-center mt-2">
+                    <p>Rep tin nhắn từ 8h sáng đến 10-11h tối ạ.</p>
+                    <p>Nếu có vấn đề gì khách hàng vui lòng chọn hỗ trợ để được khắc phục ngay hoặc các đơn hàng bị lỗi thì nhắn ngay để được hỗ trợ nhanh chóng.</p>
+                    <p>Khách hàng muốn hỏi hoặc cần tư vấn thì cứ hỏi lẹ không cần suy nghĩ vì bên shop rep siêu nhanh và hỗ trợ tận tâm.</p>
+                    <div style="display:flex; justify-content:center; gap:20px; margin-top:20px;">
+                        <a href="https://www.tiktok.com/@trungsangcaythue" target="_blank" style="text-decoration:none;">
+                            <button class="btn-confirm">Tik Tok</button>
+                        </a>
+                        <a href="https://zalo.me/0372822927" target="_blank" style="text-decoration:none;">
+                            <button class="btn-confirm" style="background:#0068FF; color:white;">Zalo</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CHÍNH SÁCH / BẢO MẬT -->
+            <div id="policy" class="section">
+                <h2>Chính sách/bảo mật🔒</h2>
+                <p>Shop bên mình chỉ là shop nhỏ không quảng cáo quảng bá lung tung chỉ muốn kiếm thêm thu nhập bằng việc chơi game.</p>
+                <p>Roblox là tựa game có rất nhiều trò chơi khác nhau và mỗi trò chơi sẽ có công dụng riêng không phải giống nhau hết.</p>
+                <p>Việc chơi game và mang lại thu nhập nó sẽ có một tác dụng của nó sẽ giúp người chơi kiếm được chút tiền giúp người chơi vui vẻ đỡ bị nản.</p>
+                <p class="highlight">Nhắc lại bên mình chỉ có một shop này sẽ không có shop thứ 2 nếu có đó sẽ là lừa đảo khách hàng vui lòng lưu ý.!</p>
+                <p>Việc bán hàng với quy mô nhỏ này vẫn sẽ ảnh hưởng đến pháp luật chính sách của nhà nước việt nam nhưng nó sẽ không ảnh hưởng nhiều shop bên mình chỉ bán hàng nho nhỏ và cày thuê với quy mô nhỏ không quá dài dòng.</p>
+                <p>Khi ghé shop vui lòng tuân thủ tất cả để không vi phạm chính sách nhà nước xin cảm ơn.</p>
+            </div>
+
+            <!-- ĐÁNH GIÁ -->
+            <div id="review" class="section">
+                <h2>Đánh giá ⭐️</h2>
+                <p class="text-center">Khách hàng có thể chọn từ 1-5 sao tuỳ theo nhu cầu của khách hàng khi sử dụng dịch vụ.</p>
+                <div class="stars" id="star-rating">
+                    <span data-value="1">★</span>
+                    <span data-value="2">★</span>
+                    <span data-value="3">★</span>
+                    <span data-value="4">★</span>
+                    <span data-value="5">★</span>
+                </div>
+                <textarea id="review-text" placeholder="Mô tả trải nghiệm của bạn..."></textarea>
+                <button class="btn-confirm" style="width:100%;" onclick="submitReview()">Gửi đánh giá</button>
+                <div id="review-result" class="mt-2 text-center highlight"></div>
+                <div id="reviews-list" class="mt-2"></div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- MODAL XÁC NHẬN MUA HÀNG -->
+    <div id="modal">
+        <div class="modal-content">
+            <h3 id="modal-title" class="text-outline mb-2">Xác nhận</h3>
+            <p id="modal-message" class="mb-2"></p>
+            <div id="modal-input-container" class="mb-2 hidden">
+                <input type="text" id="modal-input" placeholder="Nhập tên của bạn..." style="width:100%; padding:10px; background:#000; color:#fff; border:1px solid #39FF14; border-radius:5px;">
+            </div>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeModal()">❌ Huỷ</button>
+                <button class="btn-confirm" id="modal-confirm-btn">✅ Xác nhận</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. KHỞI TẠO VÀ LƯU TRỮ DỮ LIỆU ---
+        let currentUser = {
+            id: localStorage.getItem('blox_user_id') || generateRandomId(),
+            name: localStorage.getItem('blox_user_name') || '',
+            orders: JSON.parse(localStorage.getItem('blox_orders')) || [],
+            reviews: JSON.parse(localStorage.getItem('blox_reviews')) || []
+        };
+
+        // Lưu ID nếu chưa có
+        if (!localStorage.getItem('blox_user_id')) {
+            localStorage.setItem('blox_user_id', currentUser.id);
+        }
+
+        // Tạo ID ngẫu nhiên từ 1-9 số, đảo lộn
+        function generateRandomId() {
+            let length = Math.floor(Math.random() * 9) + 1; // 1 đến 9 số
+            let arr = [];
+            for(let i = 0; i < length; i++) {
+                arr.push(Math.floor(Math.random() * 9) + 1);
+            }
+            // Đảo lộn mảng
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr.join('');
+        }
+
+        // Tạo mã đơn hàng ngẫu nhiên
+        function generateOrderCode() {
+            let length = Math.floor(Math.random() * 6) + 4; // 4-9 số
+            let arr = [];
+            for(let i = 0; i < length; i++) {
+                arr.push(Math.floor(Math.random() * 9) + 1);
+            }
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr.join('');
+        }
+
+        // --- 2. HIỆU ỨNG LOADING ---
+        let progress = 0;
+        const loader = document.getElementById('loader');
+        const appContainer = document.getElementById('app-container');
+        const mainTitle = document.getElementById('main-title');
+
+        const loadInterval = setInterval(() => {
+            progress += Math.floor(Math.random() * 10) + 5;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(loadInterval);
+                setTimeout(() => {
+                    loader.style.opacity = '0';
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                        appContainer.style.display = 'block';
+                        // Đưa tiêu đề lên vị trí cao nhất (đã được set cứng trong header nên không che sản phẩm)
+                        checkUserSetup();
+                    }, 500);
+                }, 500);
+            }
+            loader.innerText = progress + '%';
+        }, 100);
+
+        // --- 3. XỬ LÝ TÀI KHOẢN NGƯỜI DÙNG ---
+        function checkUserSetup() {
+            if (!currentUser.name) {
+                // Hiện thông báo yêu cầu nhập tên
+                document.getElementById('modal-title').innerText = "Chào mừng bạn đến với Shop!";
+                document.getElementById('modal-message').innerText = "Hệ thống đã tạo tài khoản cho bạn. Vui lòng nhập tên của bạn để tiếp tục.";
+                document.getElementById('modal-input-container').classList.remove('hidden');
+                document.getElementById('modal-input').value = '';
+                
+                const confirmBtn = document.getElementById('modal-confirm-btn');
+                confirmBtn.onclick = () => {
+                    const nameInput = document.getElementById('modal-input').value.trim();
+                    if (nameInput) {
+                        currentUser.name = nameInput;
+                        localStorage.setItem('blox_user_name', nameInput);
+                        document.getElementById('modal').style.display = 'none';
+                        updateProfileUI();
+                    } else {
+                        alert("Vui lòng nhập tên của bạn!");
+                    }
+                };
+                document.getElementById('modal').style.display = 'flex';
+            } else {
+                updateProfileUI();
+            }
+            renderProducts();
+            renderOrders();
+        }
+
+        function updateProfileUI() {
+            document.getElementById('profile-name').innerText = currentUser.name;
+            document.getElementById('profile-id').innerText = currentUser.id;
+            document.getElementById('profile-orders').innerText = currentUser.orders.length;
+            
+            // Tự động điền tên vào các ô input mua hàng
+            document.getElementById('customer-name-fruit').value = currentUser.name;
+            document.getElementById('customer-name-acc').value = currentUser.name;
+            document.getElementById('name-status-fruit').innerText = "Đã lưu tên: " + currentUser.name;
+            document.getElementById('name-status-acc').innerText = "Đã lưu tên: " + currentUser.name;
+        }
+
+        // --- 4. ĐIỀU HƯỚNG MENU ---
+        const menuBtn = document.getElementById('menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        const closeBtn = document.getElementById('close-btn');
+
+        menuBtn.addEventListener('click', () => sidebar.classList.add('active'));
+        closeBtn.addEventListener('click', () => sidebar.classList.remove('active'));
+
+        function showSection(sectionId) {
+            // Ẩn tất cả các section
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            // Hiện section được chọn
+            document.getElementById(sectionId).classList.add('active');
+            // Đóng menu
+            sidebar.classList.remove('active');
+            
+            // Cập nhật lại UI nếu là profile
+            if(sectionId === 'profile') updateProfileUI();
+            if(sectionId === 'orders') renderOrders();
+            if(sectionId === 'history') renderHistory();
+        }
+
+        // --- 5. DỮ LIỆU SẢN PHẨM ---
+        const legendaryFruits = [
+            { name: 'Quake', price: '7k' },
+            { name: 'Buddha', price: '12k' },
+            { name: 'Love', price: '8k' },
+            { name: 'Spider', price: '10k' },
+            { name: 'Sound', price: '10k' },
+            { name: 'Phoenix', price: '10k' },
+            { name: 'Portal', price: '15k' },
+            { name: 'Rumble', price: '20k' },
+            { name: 'Pain', price: '15k' },
+            { name: 'Blizzard', price: '10k' }
+        ];
+
+        const mythicalFruits = [
+            { name: 'Gravity', price: '20k' },
+            { name: 'Mammoth', price: '20k' },
+            { name: 'T-rex', price: '20k' },
+            { name: 'Dough', price: '20k' },
+            { name: 'Shadow', price: '15k' },
+            { name: 'Venom', price: '15k' },
+            { name: 'Gas', price: '25k' },
+            { name: 'Spirit', price: '20k' },
+            { name: 'Tiger', price: '40k' },
+            { name: 'Yeti', price: '45k' },
+            { name: 'Magnet', price: '120k' },
+            { name: 'Kitsune', price: '70k' },
+            { name: 'Control', price: '60k' },
+            { name: 'Dragon (Phương đông)', price: '170k' },
+            { name: 'Dragon (Phương tây)', price: '180k' }
+        ];
+
+        const fPointItems = [
+            { name: '5k F', price: '7.5k' },
+            { name: '10k F', price: '15k' },
+            { name: '20k F', price: '30k' }
+        ];
+
+        const awakenItems = [
+            { name: 'Thức tỉnh tất cả các trái (Phun chiêu)', price: '20k' },
+            { name: 'Thức tỉnh tất cả các trái (3 chiêu)', price: '12k' },
+            { name: 'Thức tỉnh Dough V2 (Phun chiêu)', price: '50k' },
+            { name: 'Thức tỉnh Dough V2 (3 chiêu)', price: '30k' }
+        ];
+
+        function renderProducts() {
+            renderGrid('legendary-grid', legendaryFruits, 'fruit');
+            renderGrid('mythical-grid', mythicalFruits, 'fruit');
+            renderGrid('f-points-grid', fPointItems, 'acc');
+            renderGrid('awaken-grid', awakenItems, 'acc');
+        }
+
+        function renderGrid(containerId, data, type) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                // Placeholder ảnh, người dùng có thể thay thế bằng thẻ <img> nếu có link ảnh
+                card.innerHTML = `
+                    <div class="product-img">Ảnh</div>
+                    <div class="product-name">${item.name}</div>
+                    <div class="product-price">${item.price}</div>
+                `;
+                card.onclick = () => openBuyModal(item, type);
+                container.appendChild(card);
+            });
+        }
+
+        // --- 6. XỬ LÝ MUA HÀNG ---
+        function saveCustomerName(type) {
+            const inputId = type === 'fruit' ? 'customer-name-fruit' : 'customer-name-acc';
+            const statusId = type === 'fruit' ? 'name-status-fruit' : 'name-status-acc';
+            const name = document.getElementById(inputId).value.trim();
+            
+            if (name) {
+                currentUser.name = name;
+                localStorage.setItem('blox_user_name', name);
+                document.getElementById(statusId).innerText = "Đã lưu tên: " + name;
+                updateProfileUI();
+                alert("Đã lưu tên khách hàng!");
+            } else {
+                alert("Vui lòng nhập tên!");
+            }
+        }
+
+        function clearCustomerName(type) {
+            const inputId = type === 'fruit' ? 'customer-name-fruit' : 'customer-name-acc';
+            const statusId = type === 'fruit' ? 'name-status-fruit' : 'name-status-acc';
+            document.getElementById(inputId).value = '';
+            document.getElementById(statusId).innerText = '';
+            alert("Đã xoá tên. Vui lòng nhập lại!");
+        }
+
+        let selectedProduct = null;
+
+        function openBuyModal(product, type) {
+            selectedProduct = { ...product, type };
+            
+            document.getElementById('modal-title').innerText = "Xác nhận mua hàng";
+            document.getElementById('modal-message').innerText = `Bạn muốn mua: ${product.name} - ${product.price}`;
+            document.getElementById('modal-input-container').classList.add('hidden'); // Ẩn ô nhập tên vì đã lưu
+            
+            const confirmBtn = document.getElementById('modal-confirm-btn');
+            confirmBtn.innerText = "✅ Mua";
+            confirmBtn.onclick = () => {
+                // Bước xác nhận lại tên
+                document.getElementById('modal-message').innerText = "Vui lòng xác nhận lại tên của quý khách: " + currentUser.name;
+                confirmBtn.innerText = "Xác nhận đặt hàng";
+                confirmBtn.onclick = () => {
+                    processOrder();
+                };
+            };
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function processOrder() {
+            if (!currentUser.name) {
+                alert("Vui lòng nhập tên khách hàng trước khi mua!");
+                closeModal();
+                return;
+            }
+
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('vi-VN');
+            const timeStr = now.toLocaleTimeString('vi-VN');
+
+            const orderCode = generateOrderCode();
+            
+            const newOrder = {
+                code: orderCode,
+                product: selectedProduct.name,
+                price: selectedProduct.price,
+                date: dateStr,
+                time: timeStr,
+                status: 'Đang xử lý', // Trạng thái ban đầu
+                buyer: currentUser.name
+            };
+
+            currentUser.orders.unshift(newOrder); // Thêm vào đầu danh sách
+            localStorage.setItem('blox_orders', JSON.stringify(currentUser.orders));
+            
+            alert(`Đặt hàng thành công!\nMã đơn hàng của bạn là: ${orderCode}`);
+            closeModal();
+            updateProfileUI();
+            renderOrders();
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // --- 7. QUẢN LÝ ĐƠN HÀNG & LỊCH SỬ ---
+        function renderOrders() {
+            const ordersList = document.getElementById('orders-list');
+            ordersList.innerHTML = '';
+            
+            if (currentUser.orders.length === 0) {
+                ordersList.innerHTML = '<p class="text-center">Chưa có đơn hàng nào.</p>';
+                return;
+            }
+
+            const now = new Date();
+            const isAfter8PM = now.getHours() >= 20; // 8 giờ tối
+
+            currentUser.orders.forEach((order, index) => {
+                const orderDiv = document.createElement('div');
+                orderDiv.className = 'order-item';
+                
+                let statusHTML = `<span class="order-status">${order.status}</span>`;
+                
+                if (order.status === 'Đang xử lý' && isAfter8PM) {
+                    statusHTML = `
+                        <span class="order-status">${order.status}</span><br>
+                        <button class="btn-confirm" style="margin-top:5px; font-size:0.8rem;" onclick="completeOrder(${index})">Xác nhận hoàn thành</button>
+                    `;
+                } else if (order.status === 'Hoàn thành') {
+                    statusHTML = `<span class="order-status completed">Hoàn thành ✅</span><br><span style="font-size:0.8rem; color:#aaa;">(Vui lòng chụp ảnh đơn hàng đã hoàn thành và gửi qua phần hỗ trợ hoặc tik tok ạ cảm ơn khách hàng nhiều)</span>`;
+                }
+
+                orderDiv.innerHTML = `
+                    <p><strong>Mã đơn:</strong> ${order.code}</p>
+                    <p><strong>Sản phẩm:</strong> ${order.product} - ${order.price}</p>
+                    <p><strong>Ngày mua:</strong> ${order.date} - ${order.time}</p>
+                    <p><strong>Trạng thái:</strong> ${statusHTML}</p>
+                `;
+                ordersList.appendChild(orderDiv);
+            });
+        }
+
+        function completeOrder(index) {
+            if (confirm("Bạn xác nhận đơn hàng này đã được xử lý xong?")) {
+                currentUser.orders[index].status = 'Hoàn thành';
+                localStorage.setItem('blox_orders', JSON.stringify(currentUser.orders));
+                renderOrders();
+                renderHistory();
+            }
+        }
+
+        function renderHistory() {
+            const historyList = document.getElementById('history-list');
+            historyList.innerHTML = '';
+            
+            if (currentUser.orders.length === 0) {
+                historyList.innerHTML = '<p class="text-center">Chưa có lịch sử giao dịch.</p>';
+                return;
+            }
+
+            // Lịch sử hiển thị tất cả đơn hàng dưới dạng tóm tắt
+            currentUser.orders.forEach(order => {
+                const div = document.createElement('div');
+                div.className = 'order-item';
+                div.innerHTML = `
+                    <p><strong>Mã đơn:</strong> ${order.code} | <strong>Sản phẩm:</strong> ${order.product}</p>
+                    <p><strong>Thời gian:</strong> ${order.date} ${order.time}</p>
+                    <p><strong>Trạng thái:</strong> ${order.status}</p>
+                `;
+                historyList.appendChild(div);
+            });
+        }
+
+        // --- 8. ĐÁNH GIÁ ---
+        let selectedRating = 0;
+        const stars = document.querySelectorAll('#star-rating span');
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                selectedRating = parseInt(star.getAttribute('data-value'));
+                stars.forEach(s => {
+                    if (parseInt(s.getAttribute('data-value')) <= selectedRating) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        function submitReview() {
+            const text = document.getElementById('review-text').value.trim();
+            if (selectedRating === 0) {
+                alert("Vui lòng chọn số sao đánh giá!");
+                return;
+            }
+            if (!text) {
+                alert("Vui lòng nhập mô tả trải nghiệm!");
+                return;
+            }
+
+            const review = {
+                rating: selectedRating,
+                text: text,
+                date: new Date().toLocaleDateString('vi-VN')
+            };
+
+            currentUser.reviews.unshift(review);
+            localStorage.setItem('blox_reviews', JSON.stringify(currentUser.reviews));
+
+            document.getElementById('review-result').innerHTML = `Cảm ơn bạn đã đánh giá ${selectedRating} sao!<br><span style="font-size:0.9rem; color:#fff;">(Vui lòng chụp ảnh lại phần khách hàng mới mô tả về shop mà gửi qua tik tok hoặc zalo cho bên shop ạ. Xin cảm ơn quý khách 🎉)</span>`;
+            
+            // Reset form
+            document.getElementById('review-text').value = '';
+            selectedRating = 0;
+            stars.forEach(s => s.classList.remove('active'));
+
+            renderReviews();
+        }
+
+        function renderReviews() {
+            const list = document.getElementById('reviews-list');
+            list.innerHTML = '<h4 style="color:#39FF14; margin-bottom:10px;">Đánh giá gần đây:</h4>';
+            currentUser.reviews.forEach(r => {
+                const div = document.createElement('div');
+                div.className = 'order-item';
+                div.innerHTML = `<p>${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)} <span style="color:#aaa; font-size:0.8rem;">(${r.date})</span></p><p>${r.text}</p>`;
+                list.appendChild(div);
+            });
+        }
+
+        // Khởi tạo render đánh giá ban đầu
+        renderReviews();
+
+    </script>
+</body>
+</html>
